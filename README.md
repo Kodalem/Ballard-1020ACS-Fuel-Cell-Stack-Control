@@ -6,11 +6,11 @@ This is for [ProtoTAU](https://www.prototau.co.uk/), Engineering Studen Society,
 
 # TODO
 Major:
-- [] Implement Software Level Killswitch
+- [ ] Implement Software Level Killswitch
 
 Medium:
-- [] Add display capabilities
-- [] Add current change control capabilities
+- [ ] Add display capabilities
+- [ ] Add current change control capabilities
 
 # Licencing
 This repository was templemated from the [RP2040-Project-Template](https://github.com/rp-rs/rp2040-project-template), where as currently due to reusing some of the code, the MIT licence is used as per its conditions.
