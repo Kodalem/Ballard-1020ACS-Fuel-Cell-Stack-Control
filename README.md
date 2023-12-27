@@ -2,7 +2,7 @@
 This repository is for the hydrogen fuel cell system control running on Raspberry Pico and compiled on Rust
 
 # Whomst've
-This is for [ProtoTAU](https://www.prototau.co.uk/), Engineering Studen Society, organisiation's
+This is for [ProtoTAU](https://www.prototau.co.uk/), Engineering Studen Society, who is utilizing hydrogen technologies to create most efficient and reliable vehicle to compete in the annual EcoShell marathon event.
 
 # TODO
 Major:
