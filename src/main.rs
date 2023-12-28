@@ -134,6 +134,34 @@ fn main() -> ! {
 
     info!("I2C driver created");
 
+    info!("Initializing BME680 sensor");
+    // TODO - Figure out the hanging of the system when initializing the sensor
+    let mut dev = Bme680::init(i2c, &mut delay, I2CAddress::Primary).unwrap();
+    let settings = SettingsBuilder::new()
+        .with_humidity_oversampling(OversamplingSetting::OS2x)
+        .with_pressure_oversampling(OversamplingSetting::OS2x)
+        .with_temperature_oversampling(OversamplingSetting::OS4x)
+        .with_temperature_filter(IIRFilterSize::Size3)
+        .with_gas_measurement(Duration::from_millis(1500), 320, 25)
+        .with_run_gas(true)
+        .build();
+
+    info!("Setting sensor settings");
+    dev.set_sensor_settings(&mut delay, settings).unwrap();
+    let profile_duration = dev.get_profile_dur(&settings.0).unwrap();
+
+    // Read sensor data
+    info!("Reading sensor data");
+    dev.set_sensor_mode(&mut delay, PowerMode::ForcedMode);
+    let sensor_settings = dev.get_sensor_settings(settings.1);
+
+    info!("Retrieving sensor data");
+    let (data, _state) = dev.get_sensor_data(&mut delay).unwrap();
+    info!("Temperature {}°C", data.temperature_celsius());
+    info!("Pressure {}hPa", data.pressure_hpa());
+    info!("Humidity {}%", data.humidity_percent());
+    info!("Gas Resistence {}Ω", data.gas_resistance_ohm());
+
     // Set the relay control pin
     let mut relay_control_pin = pins.gpio22.into_push_pull_output();
 
@@ -160,14 +188,10 @@ fn main() -> ! {
     relay_control_pin.set_high().unwrap();
     // Print the purge relay is on
     info!("Purge relay is on");
-    // Send data over UART that the purge relay is on
-    writeln!(uart, "ON\r\n").unwrap();
     // Delay for the purge setup time
     delay.delay_ms(purge_setup_time);
     // Turn off the purge relay
     relay_control_pin.set_low().unwrap();
-    // Send data over UART that the purge relay is off
-    writeln!(uart, "OFF\r\n").unwrap();
     // Print the purge relay is off
     info!("Purge relay is off");
 
