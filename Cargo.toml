@@ -16,6 +16,11 @@ panic-probe = { version = "0.3", features = ["print-defmt"] }
 # We're using a Pico by default on this template
 rp-pico = "0.8"
 
+# Using the bme680 crate for the BME680 sensor
+# bme680 = { git = "https://github.com/marcelbuesing/bme680", branch = "master" }
+bme680 = { version = "0.6.0" }
+log = { version = "0.4.20", features = [] }
+
 # but you can use any BSP. Uncomment this to use the pro_micro_rp2040 BSP instead
 # sparkfun-pro-micro-rp2040 = "0.6"
 
